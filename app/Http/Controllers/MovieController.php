@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Models\Show;
 use App\Models\Genre;
 use App\Models\Actor;
 use App\Models\Director;
@@ -171,28 +172,65 @@ class MovieController extends Controller
         }
     }
 
+    public function storeShow(Request $request)
+    {
+        try {
+            $show_id = $request->input('show_id');
+            if ($request->has('show_id') && $request->input('show_id') > 0) {
+                $show_data = $this->getCurlData("/tv/" . $show_id . "?language=fr-FR");
+                // $credits_data = $this->getCurlData("/tv/" . $show_id . "/credits?language=fr-FR");
+
+                $show = new Show();
+                $show->name = $show_data->name;
+                $show->image = $show_data->poster_path;
+                $show->description = $show_data->overview ?? null;
+                $show->tmdb_id = $show_data->id ?? null;
+
+                if (isset($show_data->poster_path)) {
+                    $path = 'poster/' . $show->id . '.jpg';
+                    $response = Http::get('https://image.tmdb.org/t/p/w500' . $show_data->poster_path);
+                    Storage::disk('public')->put($path, $response->body());
+                }
+
+                if (!Show::where('tmdb_id', $show->tmdb_id)->exists()) {
+                    $show->save();
+                } else {
+                    return Redirect::back()->with('alert', 'La série est déjà enregistrée dans votre liste.');
+                }
+
+                return Redirect::back()->with('status', 'Série ajoutée avec succès !');
+            }
+        } catch (\Exception $e) {
+            return Redirect::back()->with('error', "Erreur lors de l'enregistrement de la série : " . $e->getMessage());
+        }
+    }
+
     public function searchMovie(Request $request)
     {
         $query = $request->input('search');
         $movies_data = $this->getCurlData("/search/multi?query=" . $query . "&include_adult=false&language=fr-FR&page=1");
 
         //Vérification si c'est une série ou un film
-        // if (isset($movies_data->results) && is_array($movies_data->results)) {
-        //     foreach ($movies_data->results as $result) {
-        //         if ($result->media_type === 'movie') {
-        //             $result->display_name = $result->title ?? 'Film inconnu';
-        //         } elseif ($result->media_type === 'tv') {
-        //             $result->display_name = $result->name ?? 'Série inconnue';
-        //         } else {
-        //             $result->display_name = $result->name ?? 'Résultat inconnu';
-        //         }
-        //     }
-        // }
+        if (isset($movies_data->results) && is_array($movies_data->results)) {
+            // Filtrer pour ignorer les résultats de type 'person'
+            $movies_data->results = array_filter($movies_data->results, function ($result) {
+                return isset($result->media_type) && $result->media_type !== 'person';
+            });
+
+            foreach ($movies_data->results as $result) {
+                if ($result->media_type === 'movie') {
+                    $result->display_name = $result->title ?? 'Film inconnu';
+                } elseif ($result->media_type === 'tv') {
+                    $result->display_name = $result->name ?? 'Série inconnue';
+                } else {
+                    $result->display_name = $result->name ?? 'Résultat inconnu';
+                }
+            }
+        }
         return view('movies.search', [
             'movies_data' => $movies_data,
         ]);
     }
-
 
     public function setMovieSeen(Request $request)
     {

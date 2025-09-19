@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('shows', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('image')->nullable();
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('tmdb_id')->unique();
+            $table->boolean('seen')->default(0);
             $table->timestamps();
         });
     }
