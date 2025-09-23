@@ -19,8 +19,7 @@
             <li><a href="{{ route('movies.top') }}">Top</a></li>
         </ul>
         <form action="{{ route('movies.search') }}" method="GET">
-            <input type="text" name="search" placeholder="Rechercher un film" value="{{ request('search') }}">
-            <input type="hidden" value="" aria-label="Rechercher">
+            @include('components.search-bar')
         </form>
         <button class="navbar-burger" id="navbarBurger" aria-label="Menu" aria-expanded="false">
             <span></span>
@@ -31,8 +30,7 @@
             <a href="{{ route('movies.popular') }}">Populaires</a>
             <a href="{{ route('movies.top') }}">Top</a>
             <form action="{{ route('movies.search') }}" method="GET">
-                <input type="text" name="search" placeholder="Rechercher un film" value="{{ request('search') }}">
-                <input type="hidden" value="" aria-label="Rechercher">
+                @include('components.search-bar')
             </form>
         </div>
     </nav>

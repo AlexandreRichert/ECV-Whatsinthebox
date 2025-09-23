@@ -91,7 +91,7 @@ class MovieController extends Controller
         $search = $request->input('search');
         $movies_search_data = null;
         if ($search) {
-            $movies_search_data = $this->getCurlData("/search/movie?query=" . $search . "&include_adult=false&language=fr-FR&page=1");
+            $movies_search_data = $this->getCurlData("/search/movie?query=" . rawurlencode($search) . "&include_adult=false&language=fr-FR&page=1");
         }
         return view('welcome', [
             'movies_top_datas' => $movies_top_data,
