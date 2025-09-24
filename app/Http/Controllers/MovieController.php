@@ -8,6 +8,7 @@ use App\Models\Show;
 use App\Models\Genre;
 use App\Models\Actor;
 use App\Models\Director;
+use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Http;
@@ -80,11 +81,9 @@ class MovieController extends Controller
                 $all_movies = array_merge($all_movies, $data->results);
             }
         }
-        // Tri par vote_average décroissant
         usort($all_movies, function ($a, $b) {
             return $b->vote_average <=> $a->vote_average;
         });
-        // Ajout du classement
         foreach ($all_movies as $i => $movie) {
             $movie->rank = $i + 1;
         }
@@ -201,7 +200,17 @@ class MovieController extends Controller
             $show_id = $request->input('show_id');
             if ($request->has('show_id') && $request->input('show_id') > 0) {
                 $show_data = $this->getCurlData("/tv/" . $show_id . "?language=fr-FR");
-                // $credits_data = $this->getCurlData("/tv/" . $show_id . "/credits?language=fr-FR");
+                $credits_data = $this->getCurlData("/tv/" . $show_id . "/credits?language=fr-FR");
+
+                // Récupération du nombre de saisons
+                $numberOfSeasons = $show_data->number_of_seasons ?? 0;
+                $seasons = [];
+                for ($i = 1; $i <= $numberOfSeasons; $i++) {
+                    $seasonData = $this->getCurlData("/tv/" . $show_id . "/season/" . $i . "?language=fr-FR");
+                    if ($seasonData) {
+                        $seasons[] = $seasonData;
+                    }
+                }
 
                 $show = new Show();
                 $show->name = $show_data->name;
@@ -217,6 +226,13 @@ class MovieController extends Controller
 
                 if (!Show::where('tmdb_id', $show->tmdb_id)->exists()) {
                     $show->save();
+                    // Ajout des saisons dans la table seasons
+                    foreach ($seasons as $seasonData) {
+                        Season::create([
+                            'name' => $seasonData->name ?? ($seasonData->season_number ? 'Saison ' . $seasonData->season_number : 'Saison inconnue'),
+                            'show_id' => $show->id,
+                        ]);
+                    }
                 } else {
                     return Redirect::back()->with('alert', 'La série est déjà enregistrée dans votre liste.');
                 }
@@ -232,6 +248,21 @@ class MovieController extends Controller
                     }
                     $show->genres()->attach($genreIds);
                 }
+
+                if (isset($credits_data->cast) && is_array($credits_data->cast)) {
+                    $actorIds = [];
+                    foreach (array_slice($credits_data->cast, 0, 5) as $actor) {
+                        $actorModel = Actor::firstOrCreate(
+                            ['tmdb_id' => $actor->id],
+                            ['name' => $actor->name, 'photo' => $actor->profile_path]
+                        );
+                        $actorIds[] = $actorModel->id;
+                    }
+                    $show->actors()->attach($actorIds);
+                }
+
+                // Les infos de toutes les saisons sont dans $seasons
+                // Tu peux les utiliser ici pour les stocker ou afficher
 
                 return Redirect::back()->with('status', 'Série ajoutée avec succès !');
             }

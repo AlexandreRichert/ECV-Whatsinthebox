@@ -16,22 +16,6 @@
             </div>
         </div>
         <div class="movie-details-extra">
-            <div class="movie-director-box">
-                <h3>Réalisateur</h3>
-                @if ($show->director)
-                    <div class="director-card">
-                        @if ($show->director->photo)
-                            <img src="https://image.tmdb.org/t/p/w185{{ $show->director->photo }}"
-                                alt="{{ $show->director->name }}" class="director-img">
-                        @endif
-                        <div class="director-info">
-                            <span class="director-name">{{ $show->director->name }}</span>
-                        </div>
-                    </div>
-                @else
-                    <p>Aucun réalisateur renseigné.</p>
-                @endif
-            </div>
             <div class="movie-actors-box">
                 <h3>Acteurs principaux</h3>
                 <div class="actors-list">
