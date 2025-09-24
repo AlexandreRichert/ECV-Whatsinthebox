@@ -50,11 +50,6 @@ class MovieController extends Controller
         );
     }
 
-    private function getTopRatedData()
-    {
-        return $this->getCurlData("/movie/top_rated?language=fr-FR&page=1");
-    }
-
     public function getTopRated100()
     {
         $all_movies = [];
@@ -94,10 +89,19 @@ class MovieController extends Controller
         }
         $movies_database = $movies_database->get();
 
+        $series_database = Show::with('genres');
+        if ($genre_id) {
+            $series_database->whereHas('genres', function ($q) use ($genre_id) {
+                $q->where('genres.id', $genre_id);
+            });
+        }
+        $series_database = $series_database->get();
+
         return view('welcome', [
             'movies_database' => $movies_database,
             'genres' => $genres,
             'genre_id' => $genre_id,
+            'series_database' => $series_database,
         ]);
     }
 
@@ -194,6 +198,18 @@ class MovieController extends Controller
                     $show->save();
                 } else {
                     return Redirect::back()->with('alert', 'La série est déjà enregistrée dans votre liste.');
+                }
+
+                if (isset($show_data->genres) && is_array($show_data->genres)) {
+                    $genreIds = [];
+                    foreach ($show_data->genres as $tmdb_genre) {
+                        $genre = Genre::firstOrCreate(
+                            ['id_genre_tmdb' => $tmdb_genre->id],
+                            ['name' => $tmdb_genre->name]
+                        );
+                        $genreIds[] = $genre->id;
+                    }
+                    $show->genres()->attach($genreIds);
                 }
 
                 return Redirect::back()->with('status', 'Série ajoutée avec succès !');

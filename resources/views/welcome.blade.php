@@ -13,9 +13,18 @@
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center items-start mt-8">
             @foreach ($movies_database as $movie)
                 <a href="{{ route('movies.show', ['id' => $movie->id]) }}" class="no-underline text-inherit">
-                    @include('components.movie-card', ['movie' => $movie])
+                    @include('components.movie-card', ['movie' => $movie, 'showAddButton' => false])
                 </a>
             @endforeach
         </div>
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center items-start mt-8">
+            @foreach ($series_database as $show)
+                <a href="{{ route('movies.show', ['id' => $show->id]) }}" class="no-underline text-inherit">
+                    @include('components.movie-card', ['movie' => $show, 'showAddButton' => false])
+                </a>
+            @endforeach
+        </div>
+
     </section>
 @endsection

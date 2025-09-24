@@ -1,4 +1,4 @@
-@props(['movie', 'showRank' => false, 'rank' => null])
+@props(['movie', 'showRank' => false, 'rank' => null, 'showAddButton' => true])
 @php
     $localImage = isset($movie->id) ? Storage::url('poster/' . $movie->id . '.jpg') : null;
     $hasLocal = isset($movie->id) && Storage::disk('public')->exists('poster/' . $movie->id . '.jpg');
@@ -36,11 +36,13 @@
                 </div>
             @endif
         </div>
-        <form action="{{ route('movies.store') }}" method="POST" class="w-full flex justify-center">
-            @csrf
-            <input type="hidden" name="movie_id" value="{{ $movie->id }}">
-            <input type="submit" name="save_movie" value="Ajouter à ma liste"
-                class="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold cursor-pointer mt-2 shadow hover:bg-blue-700 focus:bg-blue-800 focus:shadow-lg transition group-hover:scale-105 group-hover:ring-2 group-hover:ring-blue-400 group-hover:ring-offset-2" />
-        </form>
+        @if ($showAddButton)
+            <form action="{{ route('movies.store') }}" method="POST" class="w-full flex justify-center">
+                @csrf
+                <input type="hidden" name="movie_id" value="{{ $movie->id }}">
+                <input type="submit" name="save_movie" value="Ajouter à ma liste"
+                    class="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold cursor-pointer mt-2 shadow hover:bg-blue-700 focus:bg-blue-800 focus:shadow-lg transition group-hover:scale-105 group-hover:ring-2 group-hover:ring-blue-400 group-hover:ring-offset-2" />
+            </form>
+        @endif
     </div>
 </article>
