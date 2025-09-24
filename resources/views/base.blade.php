@@ -5,50 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    @vite('resources/css/app.css')
     <title>@yield('title')</title>
 </head>
 
-<body>
-    <nav class="navbar">
-        <ul class="navbar-left">
-            <li><a href="{{ route('home') }}">Accueil</a></li>
-        </ul>
-        <ul class="navbar-right">
-            <li><a href="{{ route('movies.popular') }}">Populaires</a></li>
-            <li><a href="{{ route('movies.top') }}">Top</a></li>
-        </ul>
-        <form action="{{ route('movies.search') }}" method="GET">
-            @include('components.search-bar')
-        </form>
-        <button class="navbar-burger" id="navbarBurger" aria-label="Menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="navbar-dropdown" id="navbarDropdown">
-            <a href="{{ route('movies.popular') }}">Populaires</a>
-            <a href="{{ route('movies.top') }}">Top</a>
-            <form action="{{ route('movies.search') }}" method="GET">
-                @include('components.search-bar')
-            </form>
-        </div>
-    </nav>
+<body class="font-sans box-border mx-auto min-h-screen bg-gradient-to-br from-[#0a2342] to-[#193a5e] text-white">
+    @include('components.navbar')
     @yield('content')
-    <script>
-        const burger = document.getElementById('navbarBurger');
-        const dropdown = document.getElementById('navbarDropdown');
-        burger.addEventListener('click', function() {
-            dropdown.classList.toggle('open');
-            burger.setAttribute('aria-expanded', dropdown.classList.contains('open'));
-        });
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 700) {
-                dropdown.classList.remove('open');
-                burger.setAttribute('aria-expanded', false);
-            }
-        });
-    </script>
 </body>
 
 </html>

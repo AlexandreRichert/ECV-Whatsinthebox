@@ -1,4 +1,117 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@layer components {
+    /*
+  Based on TailwindCSS recommendations,
+  consider using classes instead of the `@apply` directive
+  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
+*/
+    .movie-details-card {
+        @apply w-full max-w-[1200px] shadow-[0_4px_32px_rgba(25,118,210,0.08)] flex flex-col gap-8 mt-8 mb-0 mx-auto pt-8 pb-6 px-6 rounded-[18px];
+        background: #fff;
+    }
+    .movie-details-main {
+        @apply flex gap-8 items-stretch;
+    }
+    .movie-poster-box {
+        @apply flex-[0_0_320px] flex items-center justify-center aspect-[2/3] overflow-hidden min-w-[220px] max-w-xs rounded-xl;
+        background: #e3eaf5;
+    }
+    .movie-poster-img {
+        @apply w-full h-full object-cover shadow-[0_2px_12px_rgba(25,118,210,0.1)] rounded-xl;
+    }
+    .movie-info-box {
+        @apply flex-1 flex flex-col justify-center gap-[18px];
+    }
+    .movie-details-title {
+        @apply text-[2.2rem] font-bold text-[#193a5e];
+    }
+    .movie-details-description {
+        @apply text-[1.15rem] text-[#193a5e] leading-[1.6] mb-0;
+    }
+    .movie-details-extra {
+        @apply flex gap-12 flex-wrap justify-start;
+    }
+    .movie-director-box,
+    .movie-actors-box {
+        @apply shadow-[0_2px_8px_rgba(25,118,210,0.06)] min-w-[220px] px-[18px] py-6 rounded-xl;
+        background: #f4f7fa;
+    }
+    .movie-director-box h3,
+    .movie-actors-box h3 {
+        @apply text-[1.2rem] text-[#1565c0] mb-[18px];
+    }
+    .director-card {
+        @apply flex items-center gap-[18px];
+    }
+    .director-img {
+        @apply w-[72px] h-[72px] object-cover shadow-[0_2px_8px_rgba(25,118,210,0.1)] rounded-[50%];
+        background: #e3eaf5;
+    }
+    .director-info {
+        @apply flex flex-col justify-center;
+    }
+    .director-name {
+        @apply text-[1.1rem] font-semibold text-[#193a5e];
+    }
+    .actors-list {
+        @apply flex justify-center gap-[18px] flex-wrap;
+    }
+    @media (max-width: 900px) {
+        .movie-details-card {
+            @apply max-w-[300px];
+        }
+        .movie-details-main {
+            @apply flex-col gap-[18px];
+        }
+        .movie-poster-box {
+            @apply max-w-full mb-[18px];
+        }
+        .movie-details-extra {
+            @apply gap-6;
+        }
+        .movie-actors-box,
+        .movie-director-box {
+            @apply flex flex-col items-center;
+        }
+    }
+    .actor-card {
+        @apply gap-3 flex-[0_0_180px] min-w-[180px] max-w-[220px] h-[340px] flex flex-col items-center justify-start backdrop-blur-md backdrop-saturate-[120%] shadow-[0_4px_24px_rgba(25,118,210,0.1)] border snap-start transition-shadow duration-[0.2s] pt-[18px] pb-3 px-3 rounded-lg rounded-[18px] border-solid border-[rgba(180,220,255,0.18)] hover:shadow-[0_8px_32px_rgba(25,118,210,0.18)];
+        background: rgba(255, 255, 255, 0.65);
+        -webkit-backdrop-filter: blur(12px) saturate(120%);
+    }
+    .actor-img {
+        @apply w-full h-60 object-cover shadow-[0_2px_12px_rgba(25,118,210,0.1)] mb-4 rounded-xl;
+        background: #e3eaf5;
+        background: #e3eaf5;
+    }
+    .actor-info {
+        @apply flex flex-col justify-center text-center mt-2;
+    }
+    .actor-name {
+        @apply text-[1.15rem] font-semibold text-[#193a5e];
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.15);
+    }
+    @media (max-width: 900px) {
+        .actor-card {
+            @apply min-w-[140px] max-w-[160px] h-[220px];
+        }
+        .actor-img {
+            @apply h-[120px];
+        }
+    }
+    .toast-alert {
+        @apply fixed z-[9999] opacity-100 transition-opacity duration-[0.5s] text-[1.35rem] font-semibold px-10 py-7 rounded-[18px_0_0_0] right-8 bottom-8;
+    }
+    .toast-alert.success {
+        @apply text-[#1565c0] shadow-[0_4px_24px_rgba(21,101,192,0.28)] border-2 border-solid border-[#81d4fa];
+        background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
+    }
+    .toast-alert.warning {
+        @apply text-[#ef2800] shadow-[0_4px_24px_rgba(239,108,0,0.28)] border-2 border-solid border-[#ef2800];
+        background: linear-gradient(135deg, #ffe5e0 0%, #ffc3b2 100%);
+    }
+}
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,6 +119,7 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 }

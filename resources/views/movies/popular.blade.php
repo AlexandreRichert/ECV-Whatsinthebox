@@ -28,19 +28,9 @@
         </script>
     @endif
 
-    <section class="box_movies">
+    <section class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
         @foreach ($movies_datas->results as $movie)
-            <article>
-                <div class="box_poster">
-                    <img class="" src="https://image.tmdb.org/t/p/w500{{ $movie->poster_path }}" alt="">
-                </div>
-                <h2>{{ $movie->title }}</h2>
-                <form action="{{ route('movies.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="movie_id" value="{{ $movie->id }}">
-                    <input type="submit" name="save_movie" value="Ajouter à ma liste">
-                </form>
-            </article>
+            @include('components.movie-card', ['movie' => $movie])
         @endforeach
     </section>
 @endsection

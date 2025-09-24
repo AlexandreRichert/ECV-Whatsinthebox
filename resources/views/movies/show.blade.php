@@ -1,5 +1,7 @@
 @extends('base')
 
+@section('title', $movie->name . ' - Détails')
+
 @section('content')
     <div class="movie-details-card">
         <div class="movie-details-main">

@@ -64,6 +64,14 @@ class MovieController extends Controller
                 $all_movies = array_merge($all_movies, $data->results);
             }
         }
+        // Tri par vote_average décroissant
+        usort($all_movies, function ($a, $b) {
+            return $b->vote_average <=> $a->vote_average;
+        });
+        // Ajout du classement
+        foreach ($all_movies as $i => $movie) {
+            $movie->rank = $i + 1;
+        }
         return view('movies.top', ['movies_datas' => $all_movies]);
     }
 
@@ -74,8 +82,6 @@ class MovieController extends Controller
 
     public function home(Request $request)
     {
-        $movies_top_data = $this->getTopRatedData();
-        $movies_popular_data = $this->getPopularData();
 
         $genres = Genre::withCount('movies')->get();
 
@@ -88,21 +94,13 @@ class MovieController extends Controller
         }
         $movies_database = $movies_database->get();
 
-        $search = $request->input('search');
-        $movies_search_data = null;
-        if ($search) {
-            $movies_search_data = $this->getCurlData("/search/movie?query=" . rawurlencode($search) . "&include_adult=false&language=fr-FR&page=1");
-        }
         return view('welcome', [
-            'movies_top_datas' => $movies_top_data,
-            'movies_popular_datas' => $movies_popular_data,
             'movies_database' => $movies_database,
-            'movies_search_data' => $movies_search_data,
-            'search' => $search,
             'genres' => $genres,
             'genre_id' => $genre_id,
         ]);
     }
+
     public function storeMovie(Request $request)
     {
         $movie_id = $request->input('movie_id');
@@ -208,7 +206,7 @@ class MovieController extends Controller
     public function searchMovie(Request $request)
     {
         $query = $request->input('search');
-        $movies_data = $this->getCurlData("/search/multi?query=" . $query . "&include_adult=false&language=fr-FR&page=1");
+        $movies_data = $this->getCurlData("/search/multi?query=" . urlencode($query) . "&include_adult=false&language=fr-FR&page=1");
 
         //Vérification si c'est une série ou un film
         if (isset($movies_data->results) && is_array($movies_data->results)) {
