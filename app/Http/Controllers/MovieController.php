@@ -34,6 +34,27 @@ class MovieController extends Controller
             'mainActors' => $mainActors,
         ]);
     }
+
+    public function showShows($id)
+    {
+        $show = Show::with(['genres', 'actors'])->findOrFail($id);
+        $posterPath = null;
+        if ($show->image) {
+            $localPath = 'poster/' . $show->id . '.jpg';
+            if (Storage::disk('public')->exists($localPath)) {
+                $posterPath = '/storage/' . $localPath;
+            } else {
+                $posterPath = 'https://image.tmdb.org/t/p/w500' . $show->image;
+            }
+        }
+        $mainActors = $show->actors->take(5);
+        return view('shows.show', [
+            'show' => $show,
+            'posterPath' => $posterPath,
+            'mainActors' => $mainActors,
+        ]);
+    }
+
     public function getPopularData()
     {
         return $this->getCurlData("/movie/popular?language=fr-FR&page=1");
@@ -184,7 +205,7 @@ class MovieController extends Controller
 
                 $show = new Show();
                 $show->name = $show_data->name;
-                $show->image = $show_data->poster_path;
+                $show->image = !empty($show_data->poster_path) ? $show_data->poster_path : null;
                 $show->description = $show_data->overview ?? null;
                 $show->tmdb_id = $show_data->id ?? null;
 

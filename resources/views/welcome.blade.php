@@ -20,8 +20,8 @@
         <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center items-start mt-8">
             @foreach ($series_database as $show)
-                <a href="{{ route('movies.show', ['id' => $show->id]) }}" class="no-underline text-inherit">
-                    @include('components.movie-card', ['movie' => $show, 'showAddButton' => false])
+                <a href="{{ route('shows.show', ['id' => $show->id]) }}" class="no-underline text-inherit">
+                    @include('components.show-card', ['show' => $show, 'showAddButton' => false])
                 </a>
             @endforeach
         </div>
