@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Show;
 use App\Models\Genre;
 use App\Models\Actor;
+use App\Models\Episode;
 use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ShowController extends Controller
 {
@@ -69,10 +71,33 @@ class ShowController extends Controller
                     }
                     // Ajout des saisons dans la table seasons
                     foreach ($seasons as $seasonData) {
-                        Season::create([
+                        Log::info('seasonData', json_decode(json_encode($seasonData), true));
+                        $season = Season::create([
                             'name' => $seasonData->name ?? ($seasonData->season_number ? 'Saison ' . $seasonData->season_number : 'Saison inconnue'),
                             'show_id' => $show->id,
                         ]);
+
+                        Log::info('season_created', ['id' => $season->id]);
+                        Log::info('seasonData', json_decode(json_encode($season), true));
+
+                        if (isset($seasonData->episodes) && is_array($seasonData->episodes)) {
+                            foreach ($seasonData->episodes as $episodeData) {
+                                try {
+                                    $episode = Episode::create([
+                                        'name' => $episodeData->name ?? ($episodeData->episode_number ? 'Épisode ' . $episodeData->episode_number : 'Épisode inconnu'),
+                                        'season_id' => $episodeData->season_number ?? null,
+                                        'tmdb_id' => $episodeData->id ?? null,
+                                        'description' => $episodeData->overview ?? null,
+                                        'episode_number' => $episodeData->episode_number ?? null,
+                                        'image' => $episodeData->still_path ?? null,
+                                        'vote_average' => $episodeData->vote_average ?? null,
+                                    ]);
+                                    Log::info('episode_created', ['id' => $episode->id]);
+                                } catch (\Exception $e) {
+                                    Log::error('episode_create_error', ['error' => $e->getMessage()]);
+                                }
+                            }
+                        }
                     }
                 } else {
                     return Redirect::back()->with('alert', 'La série est déjà enregistrée dans votre liste.');

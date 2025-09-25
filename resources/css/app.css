@@ -30,7 +30,7 @@
         @apply text-[1.15rem] text-[#193a5e] leading-[1.6] mb-0;
     }
     .movie-details-extra {
-        @apply flex gap-12 flex-wrap justify-start;
+        @apply flex flex-col gap-12 flex-wrap justify-start;
     }
     .movie-director-box,
     .movie-actors-box {
@@ -55,7 +55,7 @@
         @apply text-[1.1rem] font-semibold text-[#193a5e];
     }
     .actors-list {
-        @apply flex justify-center gap-[18px] flex-wrap;
+        @apply flex justify-between gap-[18px] flex-wrap;
     }
     @media (max-width: 900px) {
         .movie-details-card {

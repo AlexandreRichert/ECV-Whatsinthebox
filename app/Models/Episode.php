@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model
 {
-    protected $fillable = ['name', 'season_id'];
+    protected $fillable = [
+        'name',
+        'description',
+        'image',
+        'tmdb_id',
+        'seen',
+        'episode_number',
+        'vote_average',
+        'season_id',
+    ];
 
     public function season()
     {
