@@ -17,7 +17,7 @@ class ShowController extends Controller
 {
     public function show($id)
     {
-        $show = Show::with(['genres', 'actors', 'seasons'])->findOrFail($id);
+        $show = Show::with(['genres', 'actors', 'seasons', 'episodes'])->findOrFail($id);
         $posterPath = null;
         if ($show->image) {
             $localPath = 'poster/shows/' . $show->id . '.jpg';
@@ -29,11 +29,13 @@ class ShowController extends Controller
         }
         $mainActors = $show->actors->take(5);
         $seasons = $show->seasons;
+        $episodes = $show->episodes;
         return view('shows.show', [
             'show' => $show,
             'posterPath' => $posterPath,
             'mainActors' => $mainActors,
             'seasons' => $seasons,
+            'episodes' => $episodes,
         ]);
     }
 
@@ -71,28 +73,25 @@ class ShowController extends Controller
                     }
                     // Ajout des saisons dans la table seasons
                     foreach ($seasons as $seasonData) {
-                        Log::info('seasonData', json_decode(json_encode($seasonData), true));
                         $season = Season::create([
                             'name' => $seasonData->name ?? ($seasonData->season_number ? 'Saison ' . $seasonData->season_number : 'Saison inconnue'),
                             'show_id' => $show->id,
+                            'season_number' => $seasonData->season_number ?? null,
                         ]);
-
-                        Log::info('season_created', ['id' => $season->id]);
-                        Log::info('seasonData', json_decode(json_encode($season), true));
 
                         if (isset($seasonData->episodes) && is_array($seasonData->episodes)) {
                             foreach ($seasonData->episodes as $episodeData) {
                                 try {
-                                    $episode = Episode::create([
+                                    Episode::create([
                                         'name' => $episodeData->name ?? ($episodeData->episode_number ? 'Épisode ' . $episodeData->episode_number : 'Épisode inconnu'),
-                                        'season_id' => $episodeData->season_number ?? null,
+                                        'season_id' => $season->id,
                                         'tmdb_id' => $episodeData->id ?? null,
                                         'description' => $episodeData->overview ?? null,
+                                        'season_number' => $episodeData->season_number ?? null,
                                         'episode_number' => $episodeData->episode_number ?? null,
                                         'image' => $episodeData->still_path ?? null,
                                         'vote_average' => $episodeData->vote_average ?? null,
                                     ]);
-                                    Log::info('episode_created', ['id' => $episode->id]);
                                 } catch (\Exception $e) {
                                     Log::error('episode_create_error', ['error' => $e->getMessage()]);
                                 }
@@ -126,13 +125,17 @@ class ShowController extends Controller
                     $show->actors()->attach($actorIds);
                 }
 
-                // Les infos de toutes les saisons sont dans $seasons
-                // Tu peux les utiliser ici pour les stocker ou afficher
-
                 return Redirect::back()->with('status', 'Série ajoutée avec succès !');
             }
         } catch (\Exception $e) {
             return Redirect::back()->with('error', "Erreur lors de l'enregistrement de la série : " . $e->getMessage());
         }
+    }
+
+    public function updateEpisodeSeen(Request $request, Episode $episode)
+    {
+        $episode->seen = $request->input('seen') ? 1 : 0;
+        $episode->save();
+        return response()->json(['success' => true, 'seen' => $episode->seen]);
     }
 }

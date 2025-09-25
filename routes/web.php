@@ -17,4 +17,5 @@ Route::controller(MovieController::class)->prefix('/movies')->name('movies.')->g
 Route::controller(ShowController::class)->prefix('/shows')->name('shows.')->group(function () {
     Route::get('{id}', 'show')->name('show');
     Route::post('storeShow', 'storeShow')->name('storeShow');
+    Route::post('episode/{episode}/seen', [App\Http\Controllers\ShowController::class, 'updateEpisodeSeen'])->name('episode.seen');
 });

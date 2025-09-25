@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->unsignedBigInteger('tmdb_id')->unique();
             $table->boolean('seen')->default(0);
+            $table->integer('season_number')->nullable();
             $table->integer('episode_number')->nullable();
             $table->float('vote_average')->nullable();
             $table->timestamps();

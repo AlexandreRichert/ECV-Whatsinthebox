@@ -12,6 +12,7 @@ class Episode extends Model
         'image',
         'tmdb_id',
         'seen',
+        'season_number',
         'episode_number',
         'vote_average',
         'season_id',
