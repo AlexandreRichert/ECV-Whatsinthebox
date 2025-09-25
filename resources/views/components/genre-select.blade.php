@@ -6,7 +6,7 @@
         @if (isset($genres) && count($genres))
             @foreach ($genres as $genre)
                 <option value="{{ $genre->id }}" @if ($selected == $genre->id) selected @endif>
-                    {{ $genre->name }} ({{ $genre->movies_count ?? 0 }})
+                    {{ $genre->name }} ({{ ($genre->movies_count ?? 0) + ($genre->shows_count ?? 0) }})
                 </option>
             @endforeach
         @endif

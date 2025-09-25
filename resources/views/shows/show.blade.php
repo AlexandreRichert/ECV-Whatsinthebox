@@ -32,6 +32,22 @@
                     @endforeach
                 </div>
             </div>
+            <div class="movie-seasons-box">
+                <h3>Saisons</h3>
+                <div class="seasons-list">
+                    @foreach ($seasons as $season)
+                        <div class="season-card">
+                            <span class="season-name">{{ $season->name }}</span>
+                            <div class="episodes-list">
+                                {{-- @foreach ($season->episodes as $episode)
+                                    <div class="episode-card">
+                                        <span class="episode-name">{{ $episode->name }}</span>
+                                    </div>
+                                @endforeach --}}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
-    </div>
-@endsection
+    @endsection

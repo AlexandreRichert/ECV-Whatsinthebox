@@ -1,7 +1,7 @@
 @props(['show', 'showRank' => false, 'rank' => null, 'showAddButton' => true])
 @php
-    $localImage = isset($show->id) ? Storage::url('poster/' . $show->id . '.jpg') : null;
-    $hasLocal = isset($show->id) && Storage::disk('public')->exists('poster/' . $show->id . '.jpg');
+    $localImage = isset($show->id) ? Storage::url('poster/shows/' . $show->id . '.jpg') : null;
+    $hasLocal = isset($show->id) && Storage::disk('public')->exists('poster/shows/' . $show->id . '.jpg');
     $tmdbImage = isset($show->image) ? 'https://image.tmdb.org/t/p/w500' . $show->image : null;
     $imageSrc = $hasLocal ? $localImage : $tmdbImage;
 @endphp

@@ -14,6 +14,12 @@ return new class extends Migration
         Schema::create('episodes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->unsignedBigInteger('tmdb_id')->unique();
+            $table->boolean('seen')->default(0);
+            $table->integer('episode_number')->nullable();
+            $table->float('vote_average')->nullable();
             $table->timestamps();
             $table->foreignId('season_id')->constrained()->onDelete('cascade');
         });
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('episode');
+        Schema::dropIfExists('episodes');
     }
 };

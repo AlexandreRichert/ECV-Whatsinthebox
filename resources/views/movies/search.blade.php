@@ -90,7 +90,7 @@
                             <h3
                                 class="text-lg font-semibold text-center tracking-wide mt-2 mb-1 text-white drop-shadow-lg group-hover:drop-shadow-2xl transition duration-300">
                                 {{ $result->display_name }}</h3>
-                            <form action="{{ Route('movies.storeShow') }}" method="POST"
+                            <form action="{{ route('shows.storeShow') }}" method="POST"
                                 class="w-full flex justify-center">
                                 @csrf
                                 <input type="hidden" name="show_id" value="{{ $result->id }}">
