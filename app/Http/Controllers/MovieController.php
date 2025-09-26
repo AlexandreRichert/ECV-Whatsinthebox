@@ -78,7 +78,6 @@ class MovieController extends Controller
     public function home(Request $request)
     {
 
-        // Get genres with counts for both movies and shows
         $genres = Genre::withCount(['movies', 'shows'])->get();
         $genre_id = $request->input('genre_id');
 

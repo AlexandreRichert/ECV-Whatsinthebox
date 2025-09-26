@@ -39,7 +39,7 @@
                     <div class="flex flex-wrap items-center gap-4">
                         <h3 class="text-xl font-bold text-[#10243a]">Episodes</h3>
                         <select name="season" id="season-select"
-                            class="px-4 py-2 rounded-lg border-2 border-blue-600 bg-white text-blue-900 font-semibold shadow focus:ring-2 focus:ring-blue-400 transition-all hover:border-blue-800">
+                            class="pl-4 pr-8 py-2 rounded-lg border-2 border-blue-600 bg-white text-blue-900 font-semibold shadow focus:ring-2 focus:ring-blue-400 transition-all hover:border-blue-800">
                             @foreach ($seasons as $season)
                                 <option value="{{ $season->season_number }}"
                                     @if ($season->season_number == 1) selected @endif>

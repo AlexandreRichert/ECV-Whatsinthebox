@@ -5,7 +5,19 @@
 @section('content')
     <section class="header">
         <h1 class="text-4xl font-extrabold text-blue-100 mb-6 tracking-wide drop-shadow-lg">What's in the box</h1>
-        @include('components.genre-select', ['genres' => $genres, 'selected' => request('genre_id')])
+        <form action="{{ route('home') }}" method="GET" class="flex items-center justify-center gap-3 mb-6">
+            <select name="genre_id" onchange="this.form.submit()"
+                class="pl-4 pr-8 py-2 rounded-lg border-2 border-blue-600 bg-white text-blue-900 font-semibold shadow focus:ring-2 focus:ring-blue-400 transition-all hover:border-blue-800">
+                <option value="" class="bg-white text-blue-900" @if (!request('genre_id')) selected @endif>Tous
+                    les genres</option>
+                @foreach ($genres as $genre)
+                    <option value="{{ $genre->id }}" {{ request('genre_id') == $genre->id ? 'selected' : '' }}
+                        class="bg-white text-blue-900">
+                        {{ $genre->name }} ({{ ($genre->movies_count ?? 0) + ($genre->shows_count ?? 0) }})
+                    </option>
+                @endforeach
+            </select>
+        </form>
     </section>
 
     <section class="section watchlist">
