@@ -44,10 +44,12 @@ class MovieController extends Controller
     public function getPopular()
     {
         $movies_data = $this->getPopularData();
+        $popular_show = \App\Http\Controllers\ApiController::getCurlData("/tv/popular?language=fr-FR&page=1");
         return view(
             'movies.popular',
             [
                 'movies_datas' => $movies_data,
+                'popular_show' => $popular_show,
             ]
         );
     }

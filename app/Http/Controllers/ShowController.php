@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 class ShowController extends Controller
 {
+
     public function show($id)
     {
         $show = Show::with(['genres', 'actors', 'seasons', 'episodes'])->findOrFail($id);

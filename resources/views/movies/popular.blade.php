@@ -3,7 +3,6 @@
 @section('title', 'Films Populaire')
 
 @section('content')
-    <h2>Films Populaires</h2>
 
     @if (session('status'))
         <div class="toast-alert success">
@@ -28,9 +27,22 @@
         </script>
     @endif
 
-    <section class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+    <section
+        class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+        <h2>Films Populaires</h2>
+
         @foreach ($movies_datas->results as $movie)
             @include('components.movie-card', ['movie' => $movie])
         @endforeach
     </section>
+    <section
+        class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+        <h2>Series Populaires</h2>
+
+        @foreach ($popular_show->results as $show)
+            @include('shows.popular-card', ['show' => $show])
+        @endforeach
+    </section>
+
+
 @endsection
