@@ -13,6 +13,8 @@
             <div class="movie-info-box">
                 <h2 class="movie-details-title">{{ $show->name }}</h2>
                 <p class="movie-details-description">{{ $show->description }}</p>
+                <x-bladewind::progress-bar percentage="{{ $percentageSeen }}" show_percentage_label_inline="true"
+                    percentage_suffix="complete" show_percentage_label="true" percentage_label_position="top center" />
             </div>
         </div>
         <div class="movie-details-extra">

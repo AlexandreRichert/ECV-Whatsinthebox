@@ -30,12 +30,14 @@ class ShowController extends Controller
         $mainActors = $show->actors->take(5);
         $seasons = $show->seasons;
         $episodes = $show->episodes;
+        $percentageSeen = $this->percentageSeen($show);
         return view('shows.show', [
             'show' => $show,
             'posterPath' => $posterPath,
             'mainActors' => $mainActors,
             'seasons' => $seasons,
             'episodes' => $episodes,
+            'percentageSeen' => $percentageSeen,
         ]);
     }
 
@@ -137,5 +139,15 @@ class ShowController extends Controller
         $episode->seen = $request->input('seen') ? 1 : 0;
         $episode->save();
         return response()->json(['success' => true, 'seen' => $episode->seen]);
+    }
+
+    public function percentageSeen(Show $show)
+    {
+        $totalEpisodes = $show->episodes()->count();
+        if ($totalEpisodes === 0) {
+            return 0;
+        }
+        $seenEpisodes = $show->episodes()->where('seen', 1)->count();
+        return ($seenEpisodes / $totalEpisodes) * 100;
     }
 }
