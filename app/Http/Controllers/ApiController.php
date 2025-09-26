@@ -35,4 +35,22 @@ class ApiController extends Controller
             return json_decode($response);
         }
     }
+
+    public function getTopRatedShows100()
+    {
+        $all_shows = [];
+        for ($page = 1; $page <= 5; $page++) {
+            $shows_data = self::getCurlData("/tv/top_rated?language=fr-FR&page=" . $page);
+            if ($shows_data && isset($shows_data->results)) {
+                $all_shows = array_merge($all_shows, $shows_data->results);
+            }
+        }
+        usort($all_shows, function ($a, $b) {
+            return $b->vote_average <=> $a->vote_average;
+        });
+        foreach ($all_shows as $i => $show) {
+            $show->rank = $i + 1;
+        }
+        return $all_shows;
+    }
 }

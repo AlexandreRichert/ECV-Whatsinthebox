@@ -2,7 +2,7 @@
 @php
     $localImage = isset($show->id) ? Storage::url('poster/shows/' . $show->id . '.jpg') : null;
     $hasLocal = isset($show->id) && Storage::disk('public')->exists('poster/shows/' . $show->id . '.jpg');
-    $tmdbImage = isset($show->image) ? 'https://image.tmdb.org/t/p/w500' . $show->image : null;
+    $tmdbImage = isset($show->poster_path) ? 'https://image.tmdb.org/t/p/w500' . $show->poster_path : null;
     $imageSrc = $hasLocal ? $localImage : $tmdbImage;
 @endphp
 <article
@@ -26,7 +26,7 @@
         <div class="w-full">
             <h2
                 class="text-lg font-semibold text-center tracking-wide mt-2 mb-1 text-white drop-shadow-lg group-hover:drop-shadow-2xl transition duration-300">
-                {{ $show->title }}</h2>
+                {{ $show->name }}</h2>
             @if (isset($show->genres))
                 <div class="flex flex-wrap gap-2 justify-center mb-2">
                     @foreach ($show->genres as $genre)
@@ -37,11 +37,11 @@
             @endif
         </div>
         @if ($showAddButton)
-            <form action="{{ route('shows.store') }}" method="POST" class="w-full flex justify-center">
+            <form action="{{ route('shows.storeShow') }}" method="POST" class="w-full flex justify-center">
                 @csrf
                 <input type="hidden" name="show_id" value="{{ $show->id }}">
                 <input type="submit" name="save_show" value="Ajouter à ma liste"
-                    class="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold cursor-pointer mt-2 shadow hover:bg-blue-700 focus:bg-blue-800 focus:shadow-lg transition group-hover:scale-105 group-hover:ring-2 group-hover:ring-blue-400 group-hover:ring-offset-2" />
+                    class="!bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold cursor-pointer mt-2 shadow hover:bg-blue-700 focus:bg-blue-800 focus:shadow-lg transition group-hover:scale-105 group-hover:ring-2 group-hover:ring-blue-400 group-hover:ring-offset-2" />
             </form>
         @endif
     </div>

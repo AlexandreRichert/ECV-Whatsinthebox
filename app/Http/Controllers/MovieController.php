@@ -69,7 +69,8 @@ class MovieController extends Controller
         foreach ($all_movies as $i => $movie) {
             $movie->rank = $i + 1;
         }
-        return view('movies.top', ['movies_datas' => $all_movies]);
+        $topShows = (new ApiController())->getTopRatedShows100();
+        return view('movies.top', ['movies_datas' => $all_movies, 'shows_datas' => $topShows]);
     }
 
     public function getDatabaseMovies()
