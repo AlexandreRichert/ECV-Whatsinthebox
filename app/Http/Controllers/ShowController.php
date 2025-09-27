@@ -139,7 +139,15 @@ class ShowController extends Controller
     {
         $episode->seen = $request->input('seen') ? 1 : 0;
         $episode->save();
-        return response()->json(['success' => true, 'seen' => $episode->seen]);
+
+        $show = $episode->season->show;
+        $percentage = $this->percentageSeen($show);
+
+        return response()->json([
+            'success' => true,
+            'seen' => $episode->seen,
+            'percentage' => $percentage,
+        ]);
     }
 
     public function percentageSeen(Show $show)

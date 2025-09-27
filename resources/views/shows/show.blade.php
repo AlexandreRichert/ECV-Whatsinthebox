@@ -13,8 +13,9 @@
             <div class="movie-info-box">
                 <h2 class="movie-details-title">{{ $show->name }}</h2>
                 <p class="movie-details-description">{{ $show->description }}</p>
-                <x-bladewind::progress-bar percentage="{{ $percentageSeen }}" show_percentage_label_inline="true"
-                    percentage_suffix="complete" show_percentage_label="true" percentage_label_position="top center" />
+                <x-bladewind::progress-bar class="progress-bar-episode" percentage="{{ $percentageSeen }}"
+                    show_percentage_label_inline="true" percentage_suffix="complete" show_percentage_label="true"
+                    percentage_label_position="top center" />
             </div>
         </div>
         <div class="movie-details-extra">
@@ -89,6 +90,20 @@
                             select.value = '1';
                             showSelectedSeason();
 
+                            function updateProgressBar(percentage) {
+                                const progressBar = document.querySelector('.progress-bar-episode');
+                                if (progressBar) {
+                                    const bar = progressBar.querySelector('.bar-width');
+                                    if (bar) {
+                                        bar.style.width = percentage + '%';
+                                    }
+                                    const label = progressBar.querySelector('.bar-width span.opacity-100');
+                                    if (label) {
+                                        label.textContent = Math.round(percentage) + '%';
+                                    }
+                                }
+                            }
+
                             document.querySelectorAll('input[type="checkbox"][data-episode-id]').forEach(function(checkbox) {
                                 checkbox.addEventListener('change', function() {
                                     fetch(`/shows/episode/${this.dataset.episodeId}/seen`, {
@@ -106,6 +121,10 @@
                                         .then(data => {
                                             if (!data.success) {
                                                 alert('Erreur lors de la mise à jour.');
+                                                return;
+                                            }
+                                            if (data.percentage !== undefined) {
+                                                updateProgressBar(data.percentage);
                                             }
                                         })
                                         .catch(() => alert('Erreur lors de la mise à jour.'));
