@@ -21,23 +21,49 @@
     </section>
 
     <section class="section watchlist">
-        <h2 class="text-2xl font-bold text-blue-700 mb-4">Films</h2>
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center items-start mt-8">
-            @foreach ($movies_database as $movie)
-                <a href="{{ route('movies.show', ['id' => $movie->id]) }}" class="no-underline text-inherit">
-                    @include('components.movie-card', ['movie' => $movie, 'showAddButton' => false])
-                </a>
-            @endforeach
-        </div>
-        <h2 class="text-2xl font-bold text-blue-700 mb-4 mt-12">Séries</h2>
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center items-start mt-8">
-            @foreach ($shows_database as $show)
-                <a href="{{ route('shows.show', ['id' => $show->id]) }}" class="no-underline text-inherit">
-                    @include('components.show-card', ['show' => $show, 'showAddButton' => false])
-                </a>
-            @endforeach
-        </div>
+        <x-bladewind::tab name="indigo-tab" color="cyan">
+            <x-slot name="headings">
+
+                <x-bladewind::tab.heading name="cyan" active="true" label="Films" />
+
+                <x-bladewind::tab.heading name="inactive-cyan" label="Séries" />
+
+            </x-slot>
+
+            <x-bladewind::tab.body>
+
+                <x-bladewind::tab.content name="cyan" active="true">
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center items-start mt-8">
+                        @foreach ($movies_database as $movie)
+                            <a href="{{ route('movies.show', ['id' => $movie->id]) }}" class="no-underline text-inherit">
+                                @include('components.movie-card', [
+                                    'movie' => $movie,
+                                    'showAddButton' => false,
+                                ])
+                            </a>
+                        @endforeach
+                    </div>
+
+                </x-bladewind::tab.content>
+
+
+                <x-bladewind::tab.content name="inactive-cyan">
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center items-start mt-8">
+                        @foreach ($shows_database as $show)
+                            <a href="{{ route('shows.show', ['id' => $show->id]) }}" class="no-underline text-inherit">
+                                @include('components.show-card', [
+                                    'show' => $show,
+                                    'showAddButton' => false,
+                                ])
+                            </a>
+                        @endforeach
+                    </div>
+                </x-bladewind::tab.content>
+            </x-bladewind::tab.body>
+
+        </x-bladewind::tab>
+
     </section>
 @endsection
