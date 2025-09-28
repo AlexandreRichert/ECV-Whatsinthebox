@@ -36,14 +36,14 @@ class MovieController extends Controller
         ]);
     }
 
-    public function getPopularData()
+    public function getPopularMovieData()
     {
         return ApiController::getCurlData("/movie/popular?language=fr-FR&page=1");
     }
 
     public function getPopular()
     {
-        $movies_data = $this->getPopularData();
+        $movies_data = $this->getPopularMovieData();
         $popular_show = ApiController::getCurlData("/tv/popular?language=fr-FR&page=1");
         return view(
             'movies.popular',

@@ -18,11 +18,6 @@
         <div class="absolute inset-0 bg-black/60 z-10"></div>
     @endif
     <div class="relative z-20 flex flex-col items-center justify-between h-full p-5 gap-3">
-        @if ($showRank && $rank)
-            <div class="absolute top-3 right-3 z-30 flex items-center gap-1">
-                <span class="bg-white text-[#525b01] rounded-full px-3 py-1 font-bold shadow">{{ $rank }}</span>
-            </div>
-        @endif
         <div class="w-full">
             <h2
                 class="text-lg font-semibold text-center tracking-wide mt-2 mb-1 text-white drop-shadow-lg group-hover:drop-shadow-2xl transition duration-300">
@@ -34,7 +29,12 @@
                             class="bg-red-600 text-white rounded px-2 py-1 text-xs font-medium drop-shadow group-hover:drop-shadow-2xl transition duration-300">{{ $genre->name }}</span>
                     @endforeach
                 </div>
+
             @endif
+            <p class="text-sm text-center">
+                {{ isset($show->first_air_date) ? substr($show->first_air_date, 0, 4) : (isset($show['first_air_date']) ? substr($show['first_air_date'], 0, 4) : 'N/A') }}
+            </p>
+            <p class="text-center">{{ round(($show->vote_average ?? $show['vote_average']) * 10) }}%</p>
         </div>
         @if ($showAddButton)
             <form action="{{ route('shows.storeShow') }}" method="POST" class="w-full flex justify-center">

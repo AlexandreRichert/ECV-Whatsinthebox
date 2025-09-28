@@ -39,7 +39,7 @@
 
             <x-bladewind::tab.content name="cyan" active="true">
                 <section
-                    class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+                    class="grid gap-6 sm:gap-4 justify-items-center items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 
                     @foreach ($movies_datas->results as $movie)
                         @include('components.movie-card', ['movie' => $movie])
@@ -51,7 +51,7 @@
 
             <x-bladewind::tab.content name="inactive-cyan">
                 <section
-                    class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+                    class="grid gap-6 sm:gap-4 justify-items-center items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 
                     @foreach ($popular_show->results as $show)
                         @include('shows.popular-card', ['show' => $show])

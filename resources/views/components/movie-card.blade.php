@@ -17,13 +17,13 @@
         </div>
         <div class="absolute inset-0 bg-black/60 z-10"></div>
     @endif
-    <div class="relative z-20 flex flex-col items-center justify-between h-full p-5 gap-3">
+    <div class="relative z-20 flex flex-col items-start justify-end h-full pl-5 pb-1 gap-3">
         @if ($showRank && $rank)
             <div class="absolute top-3 right-3 z-30 flex items-center gap-1">
                 <span class="bg-white text-[#525b01] rounded-full px-3 py-1 font-bold shadow">{{ $rank }}</span>
             </div>
         @endif
-        <div class="w-full">
+        <div class="w-full flex flex-col items-start">
             @if ($showSeenCheckbox)
                 <div class="absolute top-3 right-3 z-10">
                     <input type="checkbox"
@@ -31,50 +31,20 @@
                         data-movie-id="{{ $movie->id }}" @if ($movie->seen) checked @endif
                         aria-label="Film vu" />
                 </div>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        document.querySelectorAll('.movie-seen-checkbox').forEach(function(checkbox) {
-                            checkbox.addEventListener('change', function() {
-                                fetch(`/movies/${this.dataset.movieId}/seen`, {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                            'Accept': 'application/json',
-                                        },
-                                        body: JSON.stringify({
-                                            seen: this.checked ? 1 : 0
-                                        })
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (!data.success) {
-                                            alert('Erreur lors de la mise à jour.');
-                                        }
-                                    })
-                                    .catch(() => alert('Erreur lors de la mise à jour.'));
-                            });
-                        });
-                    });
-                </script>
             @endif
 
-
-            <h2
-                class="text-lg font-semibold text-center tracking-wide mt-2 mb-1 text-white drop-shadow-lg group-hover:drop-shadow-2xl transition duration-300">
-                {{ $movie->title }}</h2>
-            @if (isset($movie->genres))
-                <div class="flex flex-wrap gap-2 justify-center mb-2">
-                    @foreach ($movie->genres as $genre)
-                        <span
-                            class="bg-red-600 text-white rounded px-2 py-1 text-xs font-medium drop-shadow group-hover:drop-shadow-2xl transition duration-300">{{ $genre->name }}</span>
-                    @endforeach
-                </div>
-            @endif
-            <p class="text-sm text-center">
-                {{ isset($movie->release_date) ? substr($movie->release_date, 0, 4) : (isset($movie['release_date']) ? substr($movie['released_date'], 0, 4) : 'N/A') }}
-            </p>
-            <p class="text-center">{{ round(($movie->vote_average ?? $movie['vote_average']) * 10) }}%</p>
+            <h3
+                class="text-lg font-semibold text-left tracking-wide mt-2 mb-1 text-white drop-shadow-lg group-hover:drop-shadow-2xl transition duration-300">
+                {{ $movie->name ?? ($movie->title ?? 'Film inconnu') }}</h3>
+            <div class="flex items-center justify-between w-full mb-2 pr-1">
+                <span
+                    class="text-sm text-left font-semibold">{{ isset($movie->release_date) ? substr($movie->release_date, 0, 4) : (isset($movie['release_date']) ? substr($movie['released_date'], 0, 4) : 'N/A') }}</span>
+                <span
+                    class="flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md border border-blue-200 text-blue-700 font-bold text-xs w-10 h-10 shadow"
+                    style="box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);">
+                    {{ round(($movie->vote_average ?? $movie['vote_average']) * 10) }}%
+                </span>
+            </div>
         </div>
         @if ($showAddButton)
             <form action="{{ route('movies.store') }}" method="POST" class="w-full flex justify-center">
@@ -86,3 +56,30 @@
         @endif
     </div>
 </article>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.movie-seen-checkbox').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                fetch(`/movies/${this.dataset.movieId}/seen`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            seen: this.checked ? 1 : 0
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            alert('Erreur lors de la mise à jour.');
+                        }
+                    })
+                    .catch(() => alert('Erreur lors de la mise à jour.'));
+            });
+        });
+    });
+</script>

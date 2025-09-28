@@ -41,7 +41,7 @@
                 <section class="section-top10 rounded-xl p-6 mb-8 shadow-lg backdrop-blur-md bg-[#193a5e]/60">
                     <h2 class="text-2xl font-bold text-white text-left !mb-10">Top 10</h2>
                     <div
-                        class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+                        class="grid gap-6 sm:gap-4 justify-items-center items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                         @foreach (array_slice($movies_datas, 0, 10) as $movie)
                             @include('components.movie-card', [
                                 'movie' => $movie,
@@ -53,7 +53,7 @@
                 </section>
                 <section class="rounded-xl p-6 shadow-md backdrop-blur-md bg-[#193a5e]/60">
                     <div
-                        class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+                        class="grid gap-6 sm:gap-4 justify-items-center items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                         @foreach (array_slice($movies_datas, 10) as $movie)
                             @include('components.movie-card', [
                                 'movie' => $movie,
@@ -72,7 +72,7 @@
                 <section class="section-top10 rounded-xl p-6 mb-8 shadow-lg backdrop-blur-md bg-[#193a5e]/60">
                     <h2 class="text-2xl font-bold text-white text-center !mb-10">Top 10</h2>
                     <div
-                        class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+                        class="grid gap-6 sm:gap-4 justify-items-center items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                         @foreach (array_slice($shows_datas, 0, 10) as $show)
                             @include('components.show-card', [
                                 'show' => $show,
@@ -84,7 +84,7 @@
                 </section>
                 <section class="rounded-xl p-6 shadow-md backdrop-blur-md bg-[#193a5e]/60">
                     <div
-                        class="grid gap-8 justify-items-center items-start grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-6 sm:gap-4">
+                        class="grid gap-6 sm:gap-4 justify-items-center items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                         @foreach (array_slice($shows_datas, 10) as $show)
                             @include('components.show-card', [
                                 'show' => $show,
