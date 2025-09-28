@@ -32,15 +32,15 @@
         <div class="movie-details-extra">
             <div class="movie-actors-box">
                 <h3>Acteurs principaux</h3>
-                <div class="actors-list">
+                <div class="actors-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     @foreach ($mainActors as $actor)
-                        <div class="actor-card">
+                        <div class="actor-card flex flex-col items-center justify-center bg-white/70 rounded-xl shadow p-2">
                             @if ($actor->photo)
                                 <img src="https://image.tmdb.org/t/p/w500{{ $actor->photo }}" alt="{{ $actor->name }}"
-                                    class="actor-img">
+                                    class="actor-img w-28 h-28 sm:w-20 sm:h-20 object-cover rounded-full mb-2">
                             @endif
-                            <div class="actor-info">
-                                <span class="actor-name">{{ $actor->name }}</span>
+                            <div class="actor-info w-full text-center">
+                                <span class="actor-name text-sm font-semibold text-blue-900">{{ $actor->name }}</span>
                             </div>
                         </div>
                     @endforeach
@@ -61,10 +61,10 @@
                     </div>
                     @foreach ($seasons as $season)
                         <div class="season-card" data-season="{{ $season->season_number }}" style="display:none;">
-                            <div class="flex flex-wrap gap-4 mt-2 color-black justify-between">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2 color-black">
                                 @foreach ($episodes->where('season_number', $season->season_number) as $episode)
                                     <div
-                                        class="episode-card relative w-90 h-60 rounded-xl overflow-hidden shadow-xl bg-[#10243a]">
+                                        class="episode-card relative w-full max-w-xs h-60 rounded-xl overflow-hidden shadow-xl bg-[#10243a] mx-auto">
                                         <img src="https://image.tmdb.org/t/p/w500{{ $episode->image }}"
                                             alt="{{ $episode->name }}"
                                             class="absolute inset-0 w-full h-full object-cover brightness-80 saturate-140">
