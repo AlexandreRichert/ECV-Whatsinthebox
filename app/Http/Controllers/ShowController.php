@@ -162,4 +162,16 @@ class ShowController extends Controller
         $seenEpisodes = $show->episodes()->where('seen', 1)->count();
         return ($seenEpisodes / $totalEpisodes) * 100;
     }
+
+    public function deleteShow(Request $request)
+    {
+        if ($request->has('id_show')) {
+            $show = Show::find($request->input('id_show'));
+            if ($show) {
+                $show->genres()->detach();
+                $show->delete();
+            }
+        }
+        return Redirect::route('home')->with('status', 'Série supprimée avec succès !');
+    }
 }

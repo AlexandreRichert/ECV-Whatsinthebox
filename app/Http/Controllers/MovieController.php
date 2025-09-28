@@ -100,7 +100,6 @@ class MovieController extends Controller
         });
         $shows = $shows_query->get()->map(function ($show) {
             $show->type = 'show';
-            // dd($show);
             return $show;
         });
 
@@ -218,5 +217,18 @@ class MovieController extends Controller
             $movie->save();
         }
         return back();
+    }
+
+    public function deleteMovie(Request $request)
+    {
+        if ($request->has('id_movie')) {
+            $movie = Movie::find($request->input('id_movie'));
+            if ($movie) {
+                $movie->actors()->detach();
+                $movie->genres()->detach();
+                $movie->delete();
+            }
+        }
+        return Redirect::route('home')->with('status', 'Film supprimé avec succès !');
     }
 }

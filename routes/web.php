@@ -12,10 +12,12 @@ Route::controller(MovieController::class)->prefix('/movies')->name('movies.')->g
     Route::get('search', 'searchMovie')->name('search');
     Route::post('store', 'storeMovie')->name('store');
     Route::get('{id}', 'show')->name('show');
+    Route::post('delete/{id}', 'deleteMovie')->name('deleteMovie');
 });
 
 Route::controller(ShowController::class)->prefix('/shows')->name('shows.')->group(function () {
     Route::get('{id}', 'show')->name('show');
     Route::post('storeShow', 'storeShow')->name('storeShow');
     Route::post('episode/{episode}/seen', 'updateEpisodeSeen')->name('episode.seen');
+    Route::post('delete/{id}', 'deleteShow')->name('deleteShow');
 });

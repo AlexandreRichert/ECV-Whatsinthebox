@@ -2,6 +2,29 @@
 
 @section('title', 'Accueil')
 
+
+@if (session('status'))
+    <div class="toast-alert success">
+        {{ session('status') }}
+    </div>
+    <script>
+        setTimeout(function() {
+            var toast = document.querySelector('.toast-alert');
+            if (toast) toast.style.opacity = '0';
+        }, 5000);
+    </script>
+@endif
+@if (session('alert'))
+    <div class="toast-alert warning">
+        {{ session('alert') }}
+    </div>
+    <script>
+        setTimeout(function() {
+            var alert = document.querySelector('.toast-alert.warning');
+            if (alert) alert.style.opacity = '0';
+        }, 5000);
+    </script>
+@endif
 @section('content')
     <section class="header">
         <h1 class="text-4xl font-extrabold text-blue-100 mb-6 tracking-wide drop-shadow-lg">What's in the box</h1>
@@ -41,6 +64,14 @@
                                     'movie' => $movie,
                                     'showAddButton' => false,
                                 ])
+                                <form action="{{ route('movies.deleteMovie', $movie->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id_movie" value="{{ $movie->id }}">
+                                    <button type="submit"
+                                        class="mt-2 bg-red-600 text-white rounded-lg px-4 py-2 font-semibold cursor-pointer shadow hover:bg-red-700 focus:bg-red-800 focus:shadow-lg transition hover:scale-105 hover:ring-2 hover:ring-red-400 hover:ring-offset-2">
+                                        Supprimer de ma liste
+                                    </button>
+                                </form>
                             </a>
                         @endforeach
                     </div>
@@ -57,6 +88,15 @@
                                     'show' => $show,
                                     'showAddButton' => false,
                                 ])
+                                <form action="{{ route('shows.deleteShow', $show->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id_show" value="{{ $show->id }}">
+                                    <button type="submit"
+                                        class="mt-2 bg-red-600 text-white rounded-lg px-4 py-2 font-semibold cursor-pointer shadow hover:bg-red-700 focus:bg-red-800 focus:shadow-lg transition hover:scale-105 hover:ring-2 hover:ring-red-400 hover:ring-offset-2">
+                                        Supprimer de ma liste
+                                    </button>
+                                </form>
+
                             </a>
                         @endforeach
                     </div>
