@@ -65,6 +65,9 @@ class ShowController extends Controller
                 $show->image = !empty($show_data->poster_path) ? $show_data->poster_path : null;
                 $show->description = $show_data->overview ?? null;
                 $show->tmdb_id = $show_data->id ?? null;
+                $show->vote_average = $show_data->vote_average ?? null;
+                $show->first_air_date = $show_data->first_air_date ?? null;
+
 
                 if (!Show::where('tmdb_id', $show->tmdb_id)->exists()) {
                     $show->save();

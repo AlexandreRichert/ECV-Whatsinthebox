@@ -49,7 +49,6 @@
                                 'rank' => $movie->rank,
                             ])
                         @endforeach
-                        {{-- @endforeach --}}
                     </div>
                 </section>
                 <section class="rounded-xl p-6 shadow-md backdrop-blur-md bg-[#193a5e]/60">

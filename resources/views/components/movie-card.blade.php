@@ -35,6 +35,10 @@
                     @endforeach
                 </div>
             @endif
+            <p class="text-sm text-center">
+                {{ isset($movie->release_date) ? substr($movie->release_date, 0, 4) : (isset($movie['release_date']) ? substr($movie['released_date'], 0, 4) : 'N/A') }}
+            </p>
+            <p class="text-center">{{ round(($movie->vote_average ?? $movie['vote_average']) * 10) }}%</p>
         </div>
         @if ($showAddButton)
             <form action="{{ route('movies.store') }}" method="POST" class="w-full flex justify-center">

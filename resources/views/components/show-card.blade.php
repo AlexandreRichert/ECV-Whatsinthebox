@@ -35,6 +35,10 @@
                     @endforeach
                 </div>
             @endif
+            <p class="text-sm text-center">
+                {{ isset($show->first_air_date) ? substr($show->first_air_date, 0, 4) : (isset($show['first_air_date']) ? substr($show['first_air_date'], 0, 4) : 'N/A') }}
+            </p>
+            <p class="text-center">{{ round(($show->vote_average ?? $show['vote_average']) * 10) }}%</p>
         </div>
         @if ($showAddButton)
             <form action="{{ route('shows.storeShow') }}" method="POST" class="w-full flex justify-center">

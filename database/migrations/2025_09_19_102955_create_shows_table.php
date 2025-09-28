@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->text('description')->nullable();
+            $table->date('first_air_date')->nullable();
+            $table->float('vote_average')->nullable();
             $table->unsignedBigInteger('tmdb_id')->unique();
             $table->boolean('seen')->default(0);
             $table->timestamps();

@@ -44,7 +44,7 @@ class MovieController extends Controller
     public function getPopular()
     {
         $movies_data = $this->getPopularData();
-        $popular_show = \App\Http\Controllers\ApiController::getCurlData("/tv/popular?language=fr-FR&page=1");
+        $popular_show = ApiController::getCurlData("/tv/popular?language=fr-FR&page=1");
         return view(
             'movies.popular',
             [
@@ -100,6 +100,7 @@ class MovieController extends Controller
         });
         $shows = $shows_query->get()->map(function ($show) {
             $show->type = 'show';
+            // dd($show);
             return $show;
         });
 
@@ -123,6 +124,8 @@ class MovieController extends Controller
             $movie->image = $movie_data->poster_path;
             $movie->description = $movie_data->overview ?? null;
             $movie->tmdb_id = $movie_data->id ?? null;
+            $movie->release_date = $movie_data->release_date ?? null;
+            $movie->vote_average = $movie_data->vote_average ?? null;
 
             // Réalisateur
             $director = null;
