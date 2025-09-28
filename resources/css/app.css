@@ -21,10 +21,13 @@
         @apply w-full h-full object-cover shadow-[0_2px_12px_rgba(25,118,210,0.1)] rounded-xl;
     }
     .movie-info-box {
-        @apply flex-1 flex flex-col justify-center gap-[18px];
+        @apply flex-1 flex flex-col justify-end gap-[18px];
+    }
+    .movie-release-date {
+        @apply text-[1rem] text-[#1565c0] font-semibold;
     }
     .movie-details-title {
-        @apply text-[2.2rem] font-bold text-[#193a5e];
+        @apply !text-[2.2rem] font-bold text-[#193a5e];
     }
     .movie-details-description {
         @apply text-[1.15rem] text-[#193a5e] leading-[1.6] mb-0;

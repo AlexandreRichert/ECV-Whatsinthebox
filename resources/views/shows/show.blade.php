@@ -11,7 +11,18 @@
                 @endif
             </div>
             <div class="movie-info-box">
+                <div class="genre-labels">
+                    @if ($show->seen === 1)
+                        <x-bladewind::tag label="Vu" rounded="true" shade="dark" color="green" />
+                    @endif
+                    @foreach ($show->genres as $genre)
+                        <x-bladewind::tag label="{{ $genre->name }}" rounded="true" />
+                    @endforeach
+                </div>
                 <h2 class="movie-details-title">{{ $show->name }}</h2>
+                <span class="movie-release-date">
+                    {{ isset($show->first_air_date) ? substr($show->first_air_date, 0, 4) : (isset($show['first_air_date']) ? substr($show['first_air_date'], 0, 4) : 'N/A') }}
+                </span>
                 <p class="movie-details-description">{{ $show->description }}</p>
                 <x-bladewind::progress-bar class="progress-bar-episode" percentage="{{ $percentageSeen }}"
                     show_percentage_label_inline="true" percentage_suffix="complete" show_percentage_label="true"

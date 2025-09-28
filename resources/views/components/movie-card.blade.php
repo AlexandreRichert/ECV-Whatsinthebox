@@ -32,30 +32,30 @@
                         aria-label="Film vu" />
                 </div>
                 <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.querySelectorAll('.movie-seen-checkbox').forEach(function(checkbox) {
-                        checkbox.addEventListener('change', function() {
-                            fetch(`/movies/${this.dataset.movieId}/seen`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    seen: this.checked ? 1 : 0
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (!data.success) {
-                                    alert('Erreur lors de la mise à jour.');
-                                }
-                            })
-                            .catch(() => alert('Erreur lors de la mise à jour.'));
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.querySelectorAll('.movie-seen-checkbox').forEach(function(checkbox) {
+                            checkbox.addEventListener('change', function() {
+                                fetch(`/movies/${this.dataset.movieId}/seen`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            seen: this.checked ? 1 : 0
+                                        })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (!data.success) {
+                                            alert('Erreur lors de la mise à jour.');
+                                        }
+                                    })
+                                    .catch(() => alert('Erreur lors de la mise à jour.'));
+                            });
                         });
                     });
-                });
                 </script>
             @endif
 

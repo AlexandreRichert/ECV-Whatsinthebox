@@ -84,8 +84,8 @@ class MovieController extends Controller
         $genres = Genre::withCount(['movies', 'shows'])->get();
         $genre_id = $request->input('genre_id');
 
-        $movies_query = Movie::with('genres');
-        $shows_query = Show::with('genres');
+        $movies_query = Movie::with('genres')->orderBy('seen', 'asc');
+        $shows_query = Show::with('genres')->orderBy('seen', 'asc');
         if ($genre_id) {
             $movies_query->whereHas('genres', function ($q) use ($genre_id) {
                 $q->where('genres.id', $genre_id);
@@ -219,6 +219,7 @@ class MovieController extends Controller
         $movie->save();
         return response()->json(['success' => true, 'seen' => $movie->seen]);
     }
+
     public function deleteMovie(Request $request)
     {
         if ($request->has('id_movie')) {

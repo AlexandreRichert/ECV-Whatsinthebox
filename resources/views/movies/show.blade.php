@@ -11,7 +11,18 @@
                 @endif
             </div>
             <div class="movie-info-box">
+                <div class="genre-labels">
+                    @if ($movie->seen === 1)
+                        <x-bladewind::tag label="Vu" rounded="true" shade="dark" color="green" />
+                    @endif
+                    @foreach ($movie->genres as $genre)
+                        <x-bladewind::tag label="{{ $genre->name }}" rounded="true" />
+                    @endforeach
+                </div>
                 <h2 class="movie-details-title">{{ $movie->name }}</h2>
+                <span class="movie-release-date">
+                    {{ isset($movie->release_date) ? substr($movie->release_date, 0, 4) : (isset($movie['release_date']) ? substr($movie['released_date'], 0, 4) : 'N/A') }}
+                </span>
                 <p class="movie-details-description">{{ $movie->description }}</p>
             </div>
         </div>
