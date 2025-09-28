@@ -209,16 +209,16 @@ class MovieController extends Controller
         ]);
     }
 
-    public function setMovieSeen(Request $request)
+    public function setMovieSeen(Request $request, $id)
     {
-        if ($request->has('id_movie')) {
-            $movie = Movie::find($request->input('id_movie'));
-            $movie->seen = 1;
-            $movie->save();
+        $movie = Movie::find($id);
+        if (!$movie) {
+            return response()->json(['success' => false, 'message' => 'Film introuvable'], 404);
         }
-        return back();
+        $movie->seen = $request->input('seen') ? 1 : 0;
+        $movie->save();
+        return response()->json(['success' => true, 'seen' => $movie->seen]);
     }
-
     public function deleteMovie(Request $request)
     {
         if ($request->has('id_movie')) {

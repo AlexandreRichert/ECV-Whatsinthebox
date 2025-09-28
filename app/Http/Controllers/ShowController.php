@@ -142,7 +142,6 @@ class ShowController extends Controller
     {
         $episode->seen = $request->input('seen') ? 1 : 0;
         $episode->save();
-
         $show = $episode->season->show;
         $percentage = $this->percentageSeen($show);
 
@@ -155,12 +154,27 @@ class ShowController extends Controller
 
     public function percentageSeen(Show $show)
     {
+        $lastEpisode = $this->getLastEpisode($show);
         $totalEpisodes = $show->episodes()->count();
         if ($totalEpisodes === 0) {
             return 0;
         }
         $seenEpisodes = $show->episodes()->where('seen', 1)->count();
-        return ($seenEpisodes / $totalEpisodes) * 100;
+        $percentage = ($seenEpisodes / $totalEpisodes) * 100;
+        if ($percentage === 100 || ($lastEpisode && $lastEpisode->seen)) {
+            $show->seen = 1;
+            $show->episodes()->update(['seen' => 1]);
+        } else {
+            $show->seen = 0;
+        }
+        $show->save();
+        return $percentage;
+    }
+
+    public function getLastEpisode(Show $show)
+    {
+        $lastEpisode = $show->episodes()->orderByDesc('season_number')->orderByDesc('episode_number')->first();
+        return $lastEpisode;
     }
 
     public function deleteShow(Request $request)

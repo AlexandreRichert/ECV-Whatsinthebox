@@ -13,6 +13,7 @@ Route::controller(MovieController::class)->prefix('/movies')->name('movies.')->g
     Route::post('store', 'storeMovie')->name('store');
     Route::get('{id}', 'show')->name('show');
     Route::post('delete/{id}', 'deleteMovie')->name('deleteMovie');
+    Route::post('{id}/seen', 'setMovieSeen')->name('setMovieSeen');
 });
 
 Route::controller(ShowController::class)->prefix('/shows')->name('shows.')->group(function () {

@@ -1,4 +1,4 @@
-@props(['movie', 'showRank' => false, 'rank' => null, 'showAddButton' => true])
+@props(['movie', 'showRank' => false, 'rank' => null, 'showAddButton' => true, 'showSeenCheckbox' => false])
 @php
     $localImage = isset($movie->id) ? Storage::url('poster/movies/' . $movie->id . '.jpg') : null;
     $hasLocal = isset($movie->id) && Storage::disk('public')->exists('poster/movies/' . $movie->id . '.jpg');
@@ -24,6 +24,42 @@
             </div>
         @endif
         <div class="w-full">
+            @if ($showSeenCheckbox)
+                <div class="absolute top-3 right-3 z-10">
+                    <input type="checkbox"
+                        class="accent-green-600 w-6 h-6 rounded-full border-2 border-green-600 focus:ring-2 focus:ring-green-400 transition-all movie-seen-checkbox"
+                        data-movie-id="{{ $movie->id }}" @if ($movie->seen) checked @endif
+                        aria-label="Film vu" />
+                </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('.movie-seen-checkbox').forEach(function(checkbox) {
+                        checkbox.addEventListener('change', function() {
+                            fetch(`/movies/${this.dataset.movieId}/seen`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    seen: this.checked ? 1 : 0
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    alert('Erreur lors de la mise à jour.');
+                                }
+                            })
+                            .catch(() => alert('Erreur lors de la mise à jour.'));
+                        });
+                    });
+                });
+                </script>
+            @endif
+
+
             <h2
                 class="text-lg font-semibold text-center tracking-wide mt-2 mb-1 text-white drop-shadow-lg group-hover:drop-shadow-2xl transition duration-300">
                 {{ $movie->title }}</h2>

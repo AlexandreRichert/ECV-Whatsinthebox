@@ -63,6 +63,7 @@
                                 @include('components.movie-card', [
                                     'movie' => $movie,
                                     'showAddButton' => false,
+                                    'showSeenCheckbox' => true,
                                 ])
                                 <form action="{{ route('movies.deleteMovie', $movie->id) }}" method="POST">
                                     @csrf
