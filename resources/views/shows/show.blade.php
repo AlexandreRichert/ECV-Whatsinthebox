@@ -61,7 +61,8 @@
                     </div>
                     @foreach ($seasons as $season)
                         <div class="season-card" data-season="{{ $season->season_number }}" style="display:none;">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2 color-black">
+                            <div
+                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2 color-black">
                                 @foreach ($episodes->where('season_number', $season->season_number) as $episode)
                                     <div
                                         class="episode-card relative w-full max-w-xs h-60 rounded-xl overflow-hidden shadow-xl bg-[#10243a] mx-auto">
