@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\View;
 class Moviecard extends Component
 {
     public $movie;
-    public $showAddButton;
     public $showSeenCheckbox;
     public $rank;
     public $releaseYear;
@@ -20,7 +19,6 @@ class Moviecard extends Component
     public function __construct($movie, $showAddButton = true, $showSeenCheckbox = true, $rank = null)
     {
         $this->movie = $movie;
-        $this->showAddButton = $showAddButton;
         $this->showSeenCheckbox = $showSeenCheckbox;
         $this->rank = $rank;
         $this->releaseYear = $this->releaseYear();
