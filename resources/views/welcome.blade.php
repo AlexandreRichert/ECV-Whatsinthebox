@@ -73,11 +73,7 @@
                                 </form>
                                 <a href="{{ route('movies.show', ['id' => $movie->id]) }}"
                                     class="no-underline text-inherit">
-                                    @include('components.movie-card', [
-                                        'movie' => $movie,
-                                        'showAddButton' => false,
-                                        'showSeenCheckbox' => true,
-                                    ])
+                                    <x-movie-card :movie="$movie" :showAddButton="false" :showSeenCheckbox="true" />
                                 </a>
                                 @if (isset($movie->genres))
                                     <div class="flex flex-wrap gap-2 ml-1 justify-start">

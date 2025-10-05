@@ -50,14 +50,11 @@
                 <div class="seasons-list">
                     <div class="flex flex-wrap items-center gap-4">
                         <h3 class="text-xl font-bold text-[#10243a]">Episodes</h3>
-                        <select name="season" id="season-select"
-                            class="pl-4 pr-8 py-2 rounded-lg border-2 border-blue-600 bg-white text-blue-900 font-semibold shadow focus:ring-2 focus:ring-blue-400 transition-all hover:border-blue-800">
-                            @foreach ($seasons as $season)
-                                <option value="{{ $season->season_number }}"
-                                    @if ($season->season_number == 1) selected @endif>
-                                    Saison {{ $season->season_number }}</option>
-                            @endforeach
-                        </select>
+                        <x-select id="season-select"
+                            class="pl-4 pr-8 py-2 rounded-lg border-2 border-blue-600 bg-white text-blue-900 font-semibold shadow focus:ring-2 focus:ring-blue-400 transition-all hover:border-blue-800"
+                            :options="$seasons
+                                ->pluck('season_number', 'season_number')
+                                ->mapWithKeys(fn($num) => [$num => 'Saison ' . $num])" selected="1" onChange="showSelectedSeason()" />
                     </div>
                     @foreach ($seasons as $season)
                         <div class="season-card" data-season="{{ $season->season_number }}" style="display:none;">
@@ -88,61 +85,15 @@
                         </div>
                     @endforeach
                     <script>
-                        document.addEventListener('DOMContentLoaded', function() {
+                        function showSelectedSeason() {
                             const select = document.getElementById('season-select');
                             const seasonCards = document.querySelectorAll('.season-card');
-
-                            function showSelectedSeason() {
-                                seasonCards.forEach(card => {
-                                    card.style.display = (select.value && card.getAttribute('data-season') === select
-                                        .value) ? 'block' : 'none';
-                                });
-                            }
-                            select.addEventListener('change', showSelectedSeason);
-                            select.value = '1';
-                            showSelectedSeason();
-
-                            function updateProgressBar(percentage) {
-                                const progressBar = document.querySelector('.progress-bar-episode');
-                                if (progressBar) {
-                                    const bar = progressBar.querySelector('.bar-width');
-                                    if (bar) {
-                                        bar.style.width = percentage + '%';
-                                    }
-                                    const label = progressBar.querySelector('.bar-width span.opacity-100');
-                                    if (label) {
-                                        label.textContent = Math.round(percentage) + '%';
-                                    }
-                                }
-                            }
-
-                            document.querySelectorAll('input[type="checkbox"][data-episode-id]').forEach(function(checkbox) {
-                                checkbox.addEventListener('change', function() {
-                                    fetch(`/shows/episode/${this.dataset.episodeId}/seen`, {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                'Accept': 'application/json',
-                                            },
-                                            body: JSON.stringify({
-                                                seen: this.checked ? 1 : 0
-                                            })
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (!data.success) {
-                                                alert('Erreur lors de la mise à jour.');
-                                                return;
-                                            }
-                                            if (data.percentage !== undefined) {
-                                                updateProgressBar(data.percentage);
-                                            }
-                                        })
-                                        .catch(() => alert('Erreur lors de la mise à jour.'));
-                                });
+                            seasonCards.forEach(card => {
+                                card.style.display = (select.value && card.getAttribute('data-season') === select.value) ? 'block' :
+                                    'none';
                             });
-                        });
+                        }
+                        document.addEventListener('DOMContentLoaded', showSelectedSeason);
                     </script>
                 </div>
             </div>

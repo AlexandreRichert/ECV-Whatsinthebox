@@ -42,7 +42,7 @@
                     class="grid gap-6 sm:gap-4 justify-items-center items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 
                     @foreach ($movies_datas->results as $movie)
-                        @include('components.movie-card', ['movie' => $movie])
+                        @include('components.moviecard', ['movie' => $movie])
                     @endforeach
                 </section>
 

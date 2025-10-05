@@ -37,7 +37,7 @@
             <a href="{{ route('movies.top') }}"
                 class="text-white font-bold px-4 py-2 rounded-lg transition hover:bg-white hover:text-blue-900">Top</a>
             <form action="{{ route('movies.search') }}" method="GET" class="flex items-center gap-3">
-                @include('components.search-bar')
+                <x-searchbar />
             </form>
         </div>
         <!-- Burger menu (mobile) -->
@@ -54,7 +54,7 @@
             <a href="{{ route('movies.top') }}"
                 class="text-white font-bold px-4 py-2 rounded-lg transition hover:bg-white hover:text-blue-900">Top</a>
             <form action="{{ route('movies.search') }}" method="GET" class="flex items-center gap-3 mt-2">
-                @include('components.search-bar')
+                <x-searchbar />
             </form>
         </div>
     </nav>
